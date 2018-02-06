@@ -1,0 +1,43 @@
+{% extends "index.html" %}
+{% block meta %}
+    <title>Actualités et dernières nouvelles de la société</title>
+    <meta name="keywords" content="société" />
+    <meta name="description" content="Découvrez les nouveautés et les débats d'actualités de la vie publique vues par Elle.fr et les femmes : actualités de la société, la politique, la vie culturelle...">
+    <link rel="canonical" href="{% url 'societe' %}">
+    <link rel="dns-prefetch" href="{% url 'societe' %}">
+{% endblock %}
+{% load staticfiles %}
+{% block content %}
+{% for a in pagenr %}
+    <article class="{{ a.title|slugify }}-{{a.id}}">
+        <div class="loop-wrap clearfix">
+            <header class="loop-data">
+            <h3 class="loop-title"><a href="{% url 'societe' %}{{ a.title|slugify }}-{{a.id}}" rel="bookmark">{{ a.title }}</a></h3>
+            <p class="meta">{{a.datime}}</p>
+        </header><div class="mh-excerpt"><p>{{ a.article|striptags|truncatechars:200|linebreaks }}</p>
+        </div></div></article>
+{% endfor %}
+        {% if pagens == 1 %}
+        <li class="FF page-numbers"><a href="{% url 'societe' %}page={{ pagens }}">««</a></li>
+        {% else %}
+        <li class="zzz page-numbers"><a href="{% url 'societe' %}page=1">««</a></li>
+        <li class="FF page-numbers"><a href="{% url 'societe' %}page={{ pagens|add:"-1" }}">«</a></li>
+        {% endif %}
+        {% for b in pagern%}
+        {% if b == pagens %}
+        <li class="page-numbers current">{{ pagens }}</li>
+        {% else %}
+        {%if b == 1%}
+        <li class="page-numbers"><a href="{% url 'societe' %}">{{b}}</a></li>
+        {% else %}
+        <li class="page-numbers"><a href="{% url 'societe' %}page={{b}}">{{b}}</a></li>
+        {% endif %}
+        {%endif%}
+        {% endfor %}
+        {% if pagens == allpage %}
+        <li class="next page-numbers"><a href="{% url 'societe' %}page={{ allpage }}">»»</a></li>
+        {% else %}
+        <li class="next page-numbers"><a href="{% url 'societe' %}page={{ pagens|add:"1" }}">»</a></li>
+        <li class="bbbb page-numbers"><a href="{% url 'societe' %}page={{ allpage }}">»»</a></li>
+        {% endif %}
+{% endblock %}

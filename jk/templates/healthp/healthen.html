@@ -1,0 +1,43 @@
+{% extends "indexen.html" %}
+{% block meta %}
+    <title>Health | Latest Medical, Fitness, Healthcare & Nutrition News-Actualites-les.com</title>
+    <meta name="keywords" content="health" />
+    <meta name="description" content="Health News, Current Health News, Medical News on FOXNews.com. Latest health news. Topics include men's health, women's health, children's health, body & mind and education.">
+    <link rel="canonical" href="{% url 'healthen' %}">
+    <link rel="dns-prefetch" href="{% url 'healthen' %}">
+{% endblock %}
+{% load staticfiles %}
+{% block content %}
+{% for a in pagenr %}
+    <article class="{{ a.title|slugify }}-{{a.id}}">
+        <div class="loop-wrap clearfix">
+            <header class="loop-data">
+            <h3 class="loop-title"><a href="{% url 'healthen' %}{{ a.title|slugify }}-{{a.id}}" rel="bookmark">{{ a.title }}</a></h3>
+            <p class="meta">{{a.datime}}</p>
+        </header><div class="mh-excerpt"><p>{{ a.article|striptags|truncatechars:200|linebreaks }}</p>
+        </div></div></article>
+{% endfor %}
+        {% if pagens == 1 %}
+        <li class="FF page-numbers"><a href="{% url 'healthen' %}page={{ pagens }}">««</a></li>
+        {% else %}
+        <li class="zzz page-numbers"><a href="{% url 'healthen' %}page=1">««</a></li>
+        <li class="FF page-numbers"><a href="{% url 'healthen' %}page={{ pagens|add:"-1" }}">«</a></li>
+        {% endif %}
+        {% for b in pagern%}
+        {% if b == pagens %}
+        <li class="page-numbers current">{{ pagens }}</li>
+        {% else %}
+        {%if b == 1%}
+        <li class="page-numbers"><a href="{% url 'healthen' %}">{{b}}</a></li>
+        {% else %}
+        <li class="page-numbers"><a href="{% url 'healthen' %}page={{b}}">{{b}}</a></li>
+        {% endif %}
+        {%endif%}
+        {% endfor %}
+        {% if pagens == allpage %}
+        <li class="next page-numbers"><a href="{% url 'healthen' %}page={{ allpage }}">»»</a></li>
+        {% else %}
+        <li class="next page-numbers"><a href="{% url 'healthen' %}page={{ pagens|add:"1" }}">»</a></li>
+        <li class="bbbb page-numbers"><a href="{% url 'healthen' %}page={{ allpage }}">»»</a></li>
+        {% endif %}
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "index.html" %}
+{% block meta %}
+    <title>Économie:Toute l'actualité sur Le Actualites-les.com</title>
+    <meta name="keywords" content="Économie" />
+    <meta name="description" content="Économie - Découvrez gratuitement tous les articles, les vidéos et les infographies de la rubrique Économie sur Le Actualites-les.com">
+    <link rel="canonical" href="{% url 'economie' %}">
+    <link rel="dns-prefetch" href="{% url 'economie' %}">
+{% endblock %}
+{% load staticfiles %}
+{% block content %}
+{% for a in pagenr %}
+    <article class="{{ a.title|slugify }}-{{a.id}}">
+        <div class="loop-wrap clearfix">
+            <header class="loop-data">
+            <h3 class="loop-title"><a href="{% url 'economie' %}{{ a.title|slugify }}-{{a.id}}" rel="bookmark">{{ a.title }}</a></h3>
+            <p class="meta">{{a.datime}}</p>
+        </header><div class="mh-excerpt"><p>{{ a.article|striptags|truncatechars:200|linebreaks }}</p>
+        </div></div></article>
+{% endfor %}
+        {% if pagens == 1 %}
+        <li class="FF page-numbers"><a href="{% url 'economie' %}page={{ pagens }}">««</a></li>
+        {% else %}
+        <li class="zzz page-numbers"><a href="{% url 'economie' %}page=1">««</a></li>
+        <li class="FF page-numbers"><a href="{% url 'economie' %}page={{ pagens|add:"-1" }}">«</a></li>
+        {% endif %}
+        {% for b in pagern%}
+        {% if b == pagens %}
+        <li class="page-numbers current">{{ pagens }}</li>
+        {% else %}
+        {%if b == 1%}
+        <li class="page-numbers"><a href="{% url 'economie' %}">{{b}}</a></li>
+        {% else %}
+        <li class="page-numbers"><a href="{% url 'economie' %}page={{b}}">{{b}}</a></li>
+        {% endif %}
+        {%endif%}
+        {% endfor %}
+        {% if pagens == allpage %}
+        <li class="next page-numbers"><a href="{% url 'economie' %}page={{ allpage }}">»»</a></li>
+        {% else %}
+        <li class="next page-numbers"><a href="{% url 'economie' %}page={{ pagens|add:"1" }}">»</a></li>
+        <li class="bbbb page-numbers"><a href="{% url 'economie' %}page={{ allpage }}">»»</a></li>
+        {% endif %}
+{% endblock %}

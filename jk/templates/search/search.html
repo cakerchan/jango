@@ -1,0 +1,25 @@
+
+{% extends "index.html" %}
+{% load staticfiles %}
+{% block content %}
+{% if query %}
+    <h3>Résultats de votre recherche:</h3>
+    {% for result in page.object_list %}
+    <article class="{{ result.object.title|slugify }}-{{result.object.id}}">
+        <div class="loop-wrap clearfix">
+            <header class="loop-data">
+            <h3 class="loop-title"><a href="{% url 'index' %}{{result.object.category}}{{ result.object.title|slugify }}-{{result.object.id}}" rel="bookmark">{{ result.object.title }}</a></h3>
+            <p class="meta">{{result.object.datime}}</p>
+        </header><div class="mh-excerpt"><p>{{ result.object.article|striptags|truncatechars:200|linebreaks }}</p>
+        </div></div></article>
+    {% empty %}
+        <p>Recherche?</p>
+{% endfor %}
+    {% if page.has_previous or page.has_next %}
+            {% if page.has_previous %}<a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">{% endif %}&laquo; «{% if page.has_previous %}</a>{% endif %}
+        |
+            {% if page.has_next %}<a href="?q={{ query }}&amp;page={{ page.next_page_number }}">{% endif %}» &raquo;{% if page.has_next %}</a>{% endif %}
+        </div>
+    {% endif %}
+{% endif %}
+{% endblock %}

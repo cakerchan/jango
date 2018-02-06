@@ -1,0 +1,46 @@
+{% extends "index.html" %}
+
+{% block meta %}
+    <title>Les dernières news et résultats sportifs en direct</title>
+    <meta name="keywords" content="sport" />
+    <meta name="description" content="Suivez l'actualité sportive en direct - Tous les résultats, news et chroniques sportives en France et dans le monde sur le Football, Basketball, Cyclisme, Rugby ...
+">
+    <link rel="canonical" href="{% url 'sport' %}">
+    <link rel="dns-prefetch" href="{% url 'sport' %}">
+{% endblock %}
+{% load staticfiles %}
+{% block content %}
+{% for a in pagenr %}
+    <article class="{{ a.title|slugify }}-{{a.id}}">
+        <div class="loop-wrap clearfix">
+            <div class="loop-thumb">
+            <header class="loop-data">
+            <h3 class="loop-title"><a href="{% url 'sport' %}{{ a.title|slugify }}-{{a.id}}" rel="bookmark">{{ a.title }}</a></h3>
+            <p class="meta">{{a.datime}}</p>
+        </header><div class="mh-excerpt"><p>{{ a.article|striptags|truncatechars:200|linebreaks }}</p>
+        </div></div></article>
+{% endfor %}
+        {% if pagens == 1 %}
+        <li class="FF page-numbers"><a href="{% url 'sport' %}page={{ pagens }}">««</a></li>
+        {% else %}
+        <li class="zzz page-numbers"><a href="{% url 'sport' %}page={{ pagens|add:"-1" }}">««</a></li>
+        <li class="FF page-numbers"><a href="{% url 'sport' %}page={{ pagens|add:"-1" }}">«</a></li>
+        {% endif %}
+        {% for b in pagern%}
+        {% if b == pagens %}
+        <li class="page-numbers current">{{ pagens }}</li>
+        {% else %}
+        {%if b == 1%}
+        <li class="page-numbers"><a href="{% url 'sport' %}">{{b}}</a></li>
+        {% else %}
+        <li class="page-numbers"><a href="{% url 'sport' %}page={{b}}">{{b}}</a></li>
+        {% endif %}
+        {%endif%}
+        {% endfor %}
+        {% if pagens == allpage %}
+        <li class="next page-numbers"><a href="{% url 'sport' %}page={{ allpage }}">»»</a></li>
+        {% else %}
+        <li class="next page-numbers"><a href="{% url 'sport' %}page={{ pagens|add:"1" }}">»</a></li>
+        <li class="bbbb page-numbers"><a href="{% url 'sport' %}page={{ allpage }}">»»</a></li>
+        {% endif %}
+{% endblock %}

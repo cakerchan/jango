@@ -1,0 +1,47 @@
+{% extends "indexen.html" %}
+{% load staticfiles %}
+{% autoescape off %}
+    {% block meta %}
+    <title>{{a.title|striptags}}-{{a.id}} At Actualites-les.com</title>
+    <meta name="keywords" content="{{a.title|striptags}}" />
+    <meta name="description" content="{{aaa|linebreaks|striptags|truncatechars:150}}">
+    <link rel="canonical" href="{% url 'newsen' %}{{ a.title|slugify }}-{{a.id}}">
+    <link rel="alternate" hreflang="EN" href="{% url 'newsen' %}{{ a.title|slugify }}-{{a.id}}">
+    <link href="{% static 'css/style-b6b51ca1.css' %}" rel="stylesheet" media="all">
+    <link rel="dns-prefetch" href="{% url 'newsen' %}{{ a.title|slugify }}-{{a.id}}">
+    <link rel="dns-prefetch" href="{% url 'index'%}static/images">
+    <link rel="dns-prefetch" href="{% url 'index'%}static/css">
+    {% endblock %}
+            {% block content %}
+            <article id="content" class="{{ a.title|slugify }}-{{a.id}}">
+                <header class="post-header">
+                    <h1 class="entry-title p-name">{{a.title}}</h1>
+                    <p class="meta post-meta">
+                        &nbsp;<em>Published on {{a.datime}} | <a href="{% url 'newsen' %}" rel="category tag">{{a.category}}</a></em></p>
+                </header>
+                <div class="entry clearfix">
+                    <div class="basic">
+                        {% if a.des == '' %}
+                        {% else %}
+                    <div>{{a.des|linebreaks}}</div>
+                        {% endif %}
+                    <div>{{aaa|linebreaks}}</div>
+                        {% if name == '' %}
+                        {% else %}
+                    <div>{{name}}</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </article>
+    <h2>Associated Article:</h2>
+            {% for t in b %}
+    <article class="{{ t.title|slugify }}-{{t.id}}">
+        <div class="loop-wrap clearfix">
+            <header class="loop-data">
+            <h3 class="loop-title"><a href="{% url 'newsen' %}{{ t.title|slugify }}-{{t.id}}" rel="bookmark">{{t.title}}</a></h3>
+            <p class="meta">{{t.datime}}</p>
+        </header><div class="mh-excerpt">
+            <p>{{t.article|linebreaks|striptags|truncatechars:200 }}</p></div></div></article>
+            {% endfor %}
+            {% endblock %}
+{% endautoescape %}
